@@ -1,0 +1,43 @@
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f8ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.weather-card{
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 300px;
+}
+.weather-card h2{
+    margin-top: 0;
+    color: #333;
+}
+.temp{
+    font-size: 48px;
+    font-weight: bold;
+    color: #ff8c00;
+    margin: 10px 0;
+}
+.condition{
+    font-size: 18px;
+    color: #666;
+    text-transform: capitalize;
+}
+.details{
+    margin-top: 20px;
+    font-size: 14px;
+    color: #888;
+    display: flex;
+    justify-content: space-between;
+}
+.error{
+    color: red;
+    font-size: 14px;
+}
