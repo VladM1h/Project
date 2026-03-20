@@ -9,7 +9,6 @@ body {
     margin: 0;
     box-sizing: border-box;
 }
-/* Стили панели настроек */
 .setup-card {
     background: white;
     padding: 20px;
@@ -124,4 +123,24 @@ body {
     font-size: 16px; 
     text-align: center; 
     display: none; 
+}
+#proxy-auth-btn {
+    background-color: #6c757d; 
+    margin-bottom: 5px;
+}
+
+#proxy-auth-btn:hover {
+    background-color: #5a6268;
+}
+#save-key-btn {
+    background-color: #28a745; 
+}
+#save-key-btn:hover {
+    background-color: #218838;
+}
+
+#auth-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }

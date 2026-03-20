@@ -3,24 +3,47 @@ window.onload = () => {
     const savedKey = localStorage.getItem('yandex_api_key');
     if (savedKey) {
         document.getElementById('api-key-input').value = savedKey;
-        // Скрываем поле ввода и показываем кнопку сброса
-        document.getElementById('api-key-wrapper').style.display = 'none';
-        document.getElementById('reset-key-link').style.display = 'block';
+        showWeatherControls();
     }
 };
+
+// Новая функция для переключения интерфейса
+function saveKeyAndShow() {
+    const apiKey = document.getElementById('api-key-input').value.trim();
+    if (!apiKey) {
+        alert('Пожалуйста, введите API ключ!');
+        return;
+    }
+    localStorage.setItem('yandex_api_key', apiKey);
+    showWeatherControls();
+}
+
+function showWeatherControls() {
+    document.getElementById('api-key-wrapper').style.display = 'none';
+    document.getElementById('save-key-btn').style.display = 'none';
+    document.getElementById('proxy-auth-btn').style.display = 'none';
+    
+    document.getElementById('reset-key-link').style.display = 'block';
+    document.getElementById('weather-actions').style.display = 'flex';
+    document.getElementById('weather-actions').style.flexDirection = 'column';
+    document.getElementById('weather-actions').style.gap = '15px';
+}
 
 // Функция для сброса ключа
 function resetApiKey() {
     localStorage.removeItem('yandex_api_key');
     document.getElementById('api-key-input').value = '';
     
-    // Возвращаем поле ввода и скрываем кнопку сброса
     document.getElementById('api-key-wrapper').style.display = 'block';
-    document.getElementById('reset-key-link').style.display = 'none';
+    document.getElementById('save-key-btn').style.display = 'block';
+    document.getElementById('proxy-auth-btn').style.display = 'block';
     
-    // Скрываем карточку с погодой, так как ключ удален
+    document.getElementById('reset-key-link').style.display = 'none';
+    document.getElementById('weather-actions').style.display = 'none';
     document.getElementById('weather-card').style.display = 'none';
 }
+
+// --- ВАШ КОД БЕЗ ИЗМЕНЕНИЙ НИЖЕ ---
 
 function translateCondition(condition) {
     const conditions = {
@@ -41,28 +64,13 @@ function formatDate(dateString) {
 }
 
 function fetchWeather() {
-    // 1. Получаем ключ и проверяем его
     const apiKey = document.getElementById('api-key-input').value.trim();
-    if (!apiKey) {
-        alert('Пожалуйста, введите API ключ!');
-        return;
-    }
-    
-    // Сохраняем ключ в память браузера
-    localStorage.setItem('yandex_api_key', apiKey);
-    
-    // Скрываем поле ввода и показываем кнопку сброса после успешного ввода
-    document.getElementById('api-key-wrapper').style.display = 'none';
-    document.getElementById('reset-key-link').style.display = 'block';
-
-    // 2. Получаем координаты и название выбранного города
     const citySelect = document.getElementById('city-select');
     const coords = citySelect.value.split(',');
     const lat = coords[0];
     const lon = coords[1];
     const cityName = citySelect.options[citySelect.selectedIndex].text;
 
-    // 3. Подготавливаем UI
     const weatherCard = document.getElementById('weather-card');
     const weatherContent = document.getElementById('weather-content');
     const loading = document.getElementById('loading');
@@ -71,14 +79,11 @@ function fetchWeather() {
     weatherCard.style.display = 'none';
     loading.style.display = 'block';
 
-    // 4. Формируем запрос
     const targetUrl = `https://api.weather.yandex.ru/v2/forecast?lat=${lat}&lon=${lon}`;
     const proxyUrl = 'https://cors-anywhere.herokuapp.com/'; 
     const url = proxyUrl + targetUrl;
-
     const headers = { 'X-Yandex-Weather-Key': apiKey };
 
-    // 5. Отправляем запрос
     fetch(url, { headers })
         .then(response => {
             if (!response.ok) throw new Error(`Ошибка сервера: ${response.status}`);
@@ -87,7 +92,6 @@ function fetchWeather() {
         .then(json => {
             loading.style.display = 'none';
             weatherCard.style.display = 'block';
-
             const current = json.fact;
             let html = `
                 <div class="current-weather">
@@ -101,7 +105,6 @@ function fetchWeather() {
                 </div>
                 <div class="forecast-container">
             `;
-
             const forecasts = json.forecasts.slice(0, 3);
             forecasts.forEach(day => {
                 const dayTemp = day.parts.day.temp_avg;
@@ -117,7 +120,6 @@ function fetchWeather() {
                     </div>
                 `;
             });
-
             html += `</div>`;
             weatherContent.innerHTML = html;
         })
