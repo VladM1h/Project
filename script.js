@@ -7,7 +7,60 @@ window.onload = () => {
     }
 };
 
-// Новая функция для переключения интерфейса
+let proxyClicked = false;
+
+function handleProxyClick() {
+    // Открываем страницу прокси
+    window.open('https://cors-anywhere.herokuapp.com/corsdemo', '_blank');
+    
+    // Фиксируем нажатие
+    proxyClicked = true;
+    
+    // Активируем кнопку подтверждения
+    const saveBtn = document.getElementById('save-key-btn');
+    saveBtn.disabled = false;
+    saveBtn.style.backgroundColor = '#28a745'; // Меняем цвет на зеленый
+    saveBtn.style.cursor = 'pointer';
+}
+
+function saveKeyAndShow() {
+    if (!proxyClicked && !localStorage.getItem('yandex_api_key')) {
+        alert('Сначала нужно нажать кнопку разблокировки прокси!');
+        return;
+    }
+
+    const apiKey = document.getElementById('api-key-input').value.trim();
+    if (!apiKey) {
+        alert('Пожалуйста, введите API ключ!');
+        return;
+    }
+    
+    localStorage.setItem('yandex_api_key', apiKey);
+    showWeatherControls();
+}
+
+// В функции resetApiKey добавляем сброс состояния кнопки
+function resetApiKey() {
+    localStorage.removeItem('yandex_api_key');
+    document.getElementById('api-key-input').value = '';
+    proxyClicked = false; // Сбрасываем флаг
+    
+    const saveBtn = document.getElementById('save-key-btn');
+    saveBtn.disabled = true;
+    saveBtn.style.backgroundColor = '#ccc';
+    saveBtn.style.cursor = 'not-allowed';
+    saveBtn.innerText = '3. Подтвердить данные';
+    
+    document.getElementById('api-key-wrapper').style.display = 'block';
+    document.getElementById('save-key-btn').style.display = 'block';
+    document.getElementById('proxy-auth-btn').style.display = 'block';
+    
+    document.getElementById('reset-key-link').style.display = 'none';
+    document.getElementById('weather-actions').style.display = 'none';
+    document.getElementById('weather-card').style.display = 'none';
+}
+
+// Функция сохранение API
 function saveKeyAndShow() {
     const apiKey = document.getElementById('api-key-input').value.trim();
     if (!apiKey) {
@@ -42,8 +95,6 @@ function resetApiKey() {
     document.getElementById('weather-actions').style.display = 'none';
     document.getElementById('weather-card').style.display = 'none';
 }
-
-// --- ВАШ КОД БЕЗ ИЗМЕНЕНИЙ НИЖЕ ---
 
 function translateCondition(condition) {
     const conditions = {
