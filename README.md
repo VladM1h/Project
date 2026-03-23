@@ -19,8 +19,8 @@
 6. Подтверждаем ключ и прокси
 7. Далее выбираем город и смотрим погоду!)
 
-##Демонстрация проекта
-https://vladm1h.github.io/Project/<img width="838" height="88" alt="image" src="https://github.com/user-attachments/assets/bd083314-348b-40e0-9f52-48dd5d637d8b" />
+## Демонстрация проекта
+https://vladm1h.github.io/Project
 
 ## Структура проекта
 - index.html : Основной HTML файл
